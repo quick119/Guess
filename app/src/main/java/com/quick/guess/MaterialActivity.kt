@@ -20,17 +20,19 @@ class MaterialActivity : AppCompatActivity() {
 
         fab.setOnClickListener { view ->
             AlertDialog.Builder(this)
-                .setTitle("Replay game")
-                .setMessage("Are you sure")
+                .setTitle(getString(R.string.replay_game))
+                .setMessage(getString(R.string.are_you_sure))
                 .setPositiveButton(getString(R.string.ok), {dialog, which ->
                     secretNumber.reset()
+                    Log.d(TAG, "serect:" + secretNumber.secret)
                     counter.setText(secretNumber.count.toString())
                     ed_number.setText("")
                 })
-                .setNeutralButton("Cancel", null)
+                .setNeutralButton(getString(R.string.cancel), null)
                 .show()
         }
         counter.setText(secretNumber.count.toString())
+        Log.d(TAG, "serect:" + secretNumber.secret)
     }
     fun check(view : View) {
         val n = ed_number.text.toString().toInt()
@@ -38,6 +40,8 @@ class MaterialActivity : AppCompatActivity() {
         Log.d(TAG, "n:" + n)
         val diff = secretNumber.validate(n)
         var message = getString(R.string.yes_you_got_it)
+        if (secretNumber.count < 3)
+            message = getString(R.string.excellent) + n
         if (diff < 0) {
             message = getString(R.string.bigger)
         } else if (diff > 0) {
