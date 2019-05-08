@@ -1,5 +1,6 @@
 package com.quick.guess
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -32,7 +33,7 @@ class MaterialActivity : AppCompatActivity() {
                 .show()
         }
         counter.setText(secretNumber.count.toString())
-        Log.d(TAG, "serect:" + secretNumber.secret)
+        Log.d(TAG, "onCreate:" + secretNumber.secret)
     }
     fun check(view : View) {
         val n = ed_number.text.toString().toInt()
@@ -52,7 +53,13 @@ class MaterialActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.dialog_title))
             .setMessage(message)
-            .setPositiveButton(getString(R.string.ok), null)
+            .setPositiveButton(getString(R.string.ok), {dialog, which ->
+                if (diff == 0) {
+                    val intent = Intent(this, RecordActivity::class.java)
+                    intent.putExtra("COUNTER", secretNumber.count)
+                    startActivity(intent)
+                }
+            })
             .show()
     }
 }
