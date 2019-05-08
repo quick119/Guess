@@ -1,5 +1,6 @@
 package com.quick.guess
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +10,9 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 
 import kotlinx.android.synthetic.main.activity_material.*
+import kotlinx.android.synthetic.main.activity_record.*
 import kotlinx.android.synthetic.main.content_material.*
+import kotlinx.android.synthetic.main.content_material.counter
 
 class MaterialActivity : AppCompatActivity() {
     val secretNumber = SecretNumber()
@@ -34,6 +37,11 @@ class MaterialActivity : AppCompatActivity() {
         }
         counter.setText(secretNumber.count.toString())
         Log.d(TAG, "onCreate:" + secretNumber.secret)
+        val count = getSharedPreferences("guess", Context.MODE_PRIVATE)
+            .getInt("REC_COUNTER", -1)
+        val nick = getSharedPreferences("guess", Context.MODE_PRIVATE)
+            .getString("REC_NICKNAME", null)
+        Log.d(TAG, "data: " + count + "/" + nick)
     }
     fun check(view : View) {
         val n = ed_number.text.toString().toInt()
