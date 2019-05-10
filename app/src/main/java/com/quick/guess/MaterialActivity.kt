@@ -82,12 +82,12 @@ class MaterialActivity : AppCompatActivity() {
         println("number: $n")
         Log.d(TAG, "n:" + n)
 
-
+        var count = (secretNumber.count)
         var diff = (secretNumber.validate(n))
         var message = when {
-            (secretNumber.count) in 0..2 -> getString(R.string.excellent) + n
             diff < 0 -> getString(R.string.bigger)
             diff > 0 -> getString(R.string.smaller)
+            count in 0..2 -> getString(R.string.excellent) + n
             else -> getString(R.string.yes_you_got_it)
         }
 
