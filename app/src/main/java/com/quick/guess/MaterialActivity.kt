@@ -81,15 +81,16 @@ class MaterialActivity : AppCompatActivity() {
         val n = ed_number.text.toString().toInt()
         println("number: $n")
         Log.d(TAG, "n:" + n)
-        val diff = secretNumber.validate(n)
-        var message = getString(R.string.yes_you_got_it)
-        if (secretNumber.count < 3)
-            message = getString(R.string.excellent) + n
-        if (diff < 0) {
-            message = getString(R.string.bigger)
-        } else if (diff > 0) {
-            message = getString(R.string.smaller)
+
+
+        var diff = (secretNumber.validate(n))
+        var message = when {
+            (secretNumber.count) in 0..2 -> getString(R.string.excellent) + n
+            diff < 0 -> getString(R.string.bigger)
+            diff > 0 -> getString(R.string.smaller)
+            else -> getString(R.string.yes_you_got_it)
         }
+
         counter.setText(secretNumber.count.toString())
 //       Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         AlertDialog.Builder(this)
