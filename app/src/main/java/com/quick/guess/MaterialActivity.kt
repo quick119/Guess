@@ -1,5 +1,6 @@
 package com.quick.guess
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.content_material.*
 import kotlinx.android.synthetic.main.content_material.counter
 
 class MaterialActivity : AppCompatActivity() {
+    private val REQUEST_RECORD: Int = 100
     val secretNumber = SecretNumber()
     val TAG = MaterialActivity::class.java.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,17 +26,7 @@ class MaterialActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            AlertDialog.Builder(this)
-                .setTitle(getString(R.string.replay_game))
-                .setMessage(getString(R.string.are_you_sure))
-                .setPositiveButton(getString(R.string.ok), {dialog, which ->
-                    secretNumber.reset()
-                    Log.d(TAG, "serect:" + secretNumber.secret)
-                    counter.setText(secretNumber.count.toString())
-                    ed_number.setText("")
-                })
-                .setNeutralButton(getString(R.string.cancel), null)
-                .show()
+            replay()
         }
         counter.setText(secretNumber.count.toString())
         Log.d(TAG, "onCreate:" + secretNumber.secret)
@@ -43,6 +35,20 @@ class MaterialActivity : AppCompatActivity() {
         val nick = getSharedPreferences("guess", Context.MODE_PRIVATE)
             .getString("REC_NICKNAME", null)
         Log.d(TAG, "data: " + count + "/" + nick)
+    }
+
+    private fun replay() {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.replay_game))
+            .setMessage(getString(R.string.are_you_sure))
+            .setPositiveButton(getString(R.string.ok), { dialog, which ->
+                secretNumber.reset()
+                Log.d(TAG, "serect:" + secretNumber.secret)
+                counter.setText(secretNumber.count.toString())
+                ed_number.setText("")
+            })
+            .setNeutralButton(getString(R.string.cancel), null)
+            .show()
     }
 
     override fun onStart() {
@@ -100,9 +106,21 @@ class MaterialActivity : AppCompatActivity() {
                 if (diff == 0) {
                     val intent = Intent(this, RecordActivity::class.java)
                     intent.putExtra("COUNTER", secretNumber.count)
-                    startActivity(intent)
+//                    startActivity(intent)
+                    startActivityForResult(intent, REQUEST_RECORD)
                 }
             })
             .show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_RECORD) {
+            if (resultCode == Activity.RESULT_OK) {
+                val nickname = data?.getStringExtra("NICK")
+                Log.d(TAG, "onActivityResult " + nickname)
+                replay()
+            }
+        }
     }
 }
