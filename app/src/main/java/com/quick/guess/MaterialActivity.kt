@@ -19,6 +19,7 @@ class MaterialActivity : AppCompatActivity() {
     val TAG = MaterialActivity::class.java.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate: ")
         setContentView(R.layout.activity_material)
         setSupportActionBar(toolbar)
 
@@ -43,6 +44,39 @@ class MaterialActivity : AppCompatActivity() {
             .getString("REC_NICKNAME", null)
         Log.d(TAG, "data: " + count + "/" + nick)
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart: ")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop: ")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause : ")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(TAG, "onRestart: ")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: ")
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy: ")
+    }
+
     fun check(view : View) {
         val n = ed_number.text.toString().toInt()
         println("number: $n")
