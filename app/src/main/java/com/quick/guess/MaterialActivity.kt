@@ -7,11 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 
 import kotlinx.android.synthetic.main.activity_material.*
-import kotlinx.android.synthetic.main.activity_record.*
 import kotlinx.android.synthetic.main.content_material.*
 import kotlinx.android.synthetic.main.content_material.counter
 

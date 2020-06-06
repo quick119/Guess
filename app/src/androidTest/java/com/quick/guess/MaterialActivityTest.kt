@@ -33,4 +33,19 @@ class MaterialActivityTest {
             }
         }
     }
+    @Test
+    fun replayButton() {
+        val resources = activityTestRule.activity.resources
+        val secret = activityTestRule.activity.secretNumber.secret
+        val n = 5
+        if (n != secret) {
+            onView(withId(R.id.ed_number)).perform(clearText())
+            onView(withId(R.id.ed_number)).perform(typeText(n.toString()))
+            onView(withId(R.id.ok_button)).perform(click())
+            onView(withText("OK")).perform(click())
+            onView(withId(R.id.fab)).perform(click(), closeSoftKeyboard())
+            onView(withText("OK")).perform(click())
+
+        }
+    }
 }
