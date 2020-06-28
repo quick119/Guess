@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -116,5 +114,17 @@ class MainActivity : AppCompatActivity() {
 
     class FunctionHolder(view: View) : RecyclerView.ViewHolder(view) {
         var nameText: TextView = view.name
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_cache) {
+            Log.d(TAG, "onOptionsItemSelected")
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
