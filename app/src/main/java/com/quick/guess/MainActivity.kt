@@ -23,6 +23,8 @@ import java.util.jar.Manifest
 class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE_CAMERA = 100
     val TAG = MainActivity::class.java.simpleName
+    var cacheService : Intent? = null
+
     val functions = listOf<String>(
         "Camera",
         "Guess game",
@@ -124,7 +126,14 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_cache) {
             Log.d(TAG, "onOptionsItemSelected")
+            cacheService = Intent(this, CacheService::class.java)
+            startService(cacheService)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopService(cacheService)
     }
 }
