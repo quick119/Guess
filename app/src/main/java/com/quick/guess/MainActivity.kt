@@ -1,8 +1,10 @@
 package com.quick.guess
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +14,16 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.row_function.view.*
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
+    private val REQUEST_CODE_CAMERA = 100
     val TAG = MainActivity::class.java.simpleName
     val functions = listOf<String>(
         "Camera",
@@ -48,7 +54,6 @@ class MainActivity : AppCompatActivity() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 Log.d(TAG, "onItemSelected: ${colors[position]}")
             }
-
         }
     }
 
@@ -74,10 +79,39 @@ class MainActivity : AppCompatActivity() {
 
     private fun functionClicked(position: Int) {
         when(position) {
+            0 -> {
+                val permission = ContextCompat.checkSelfPermission(this,
+                    android.Manifest.permission.CAMERA)
+                if (permission == PackageManager.PERMISSION_GRANTED) {
+                    takePhoto()
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                        arrayOf(android.Manifest.permission.CAMERA), REQUEST_CODE_CAMERA)
+                }
+
+            }
             1 -> startActivity(Intent(this, MaterialActivity::class.java))
             2 -> startActivity(Intent(this, RecordListActivity::class.java))
             else -> return
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_CAMERA) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                takePhoto()
+            }
+        }
+    }
+
+    private fun takePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivity(intent)
     }
 
     class FunctionHolder(view: View) : RecyclerView.ViewHolder(view) {
