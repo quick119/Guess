@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -32,6 +34,22 @@ class MainActivity : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.setHasFixedSize(true)
         recycler.adapter = FunctionAdapter()
+        //spinner
+        val colors = arrayOf("Red", "Green", "Blue")
+        val adapter = ArrayAdapter<String>(this,
+            android.R.layout.simple_spinner_item, colors)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                Log.d(TAG, "onItemSelected: ${colors[position]}")
+            }
+
+        }
     }
 
     inner class FunctionAdapter() : RecyclerView.Adapter<FunctionHolder>() {
