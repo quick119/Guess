@@ -125,9 +125,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_cache) {
-            Log.d(TAG, "onOptionsItemSelected")
+            Log.d(TAG, "Cache selected")
             cacheService = Intent(this, CacheService::class.java)
             startService(cacheService)
+            startService(Intent(this, CacheService::class.java))
+            startService(Intent(this, CacheService::class.java))
         }
         return super.onOptionsItemSelected(item)
     }
