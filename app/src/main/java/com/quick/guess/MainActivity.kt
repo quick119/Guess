@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         "Record list",
         "Download coupons",
         "News",
+        "Snooker",
         "Maps")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +107,7 @@ class MainActivity : AppCompatActivity() {
             1 -> startActivity(Intent(this, MaterialActivity::class.java))
             2 -> startActivity(Intent(this, RecordListActivity::class.java))
             4 -> startActivity(Intent(this, NewsActivity::class.java))
+            5 -> startActivity(Intent(this, SnookerActivity::class.java))
             else -> return
         }
     }
