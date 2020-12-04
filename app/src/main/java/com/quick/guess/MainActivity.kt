@@ -16,6 +16,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.quick.guess.data.Event
+import com.quick.guess.data.EventResult
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.row_function.view.*
 import org.json.JSONArray
@@ -39,11 +42,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Thread {
             val data = URL("http://api.snooker.org/?t=5&s=2020").readText()
-            println(data)
-            val array = JSONArray(data)
-            for (i in 0..array.length()-1) {
-                val obj = array.getJSONObject(i)
-                println(obj.getInt("ID"))
+            val result = Gson().fromJson(data, EventResult::class.java)
+            result.forEach {
+                Log.d(TAG, "onCreate: $it")
             }
         }.start()
 
