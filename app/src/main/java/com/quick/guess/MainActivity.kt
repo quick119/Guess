@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.row_function.view.*
+import org.json.JSONArray
 import java.net.URL
 import java.util.jar.Manifest
 
@@ -36,8 +37,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Thread{
-            val data = URL("http://tw.yahoo.com").readText()
+        Thread {
+            val data = URL("http://api.snooker.org/?t=5&s=2020").readText()
+            println(data)
+            val array = JSONArray(data)
+            for (i in 0..array.length()-1) {
+                val obj = array.getJSONObject(i)
+                println(obj.getInt("ID"))
+            }
         }.start()
 
         //RecyclerView
