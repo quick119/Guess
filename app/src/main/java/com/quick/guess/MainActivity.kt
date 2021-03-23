@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -26,6 +27,7 @@ import java.net.URL
 import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var viewModel: GuessViewModel
     private val REQUEST_CODE_CAMERA = 100
     val TAG = MainActivity::class.java.simpleName
     var cacheService : Intent? = null
@@ -41,6 +43,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel = ViewModelProvider(this).get(GuessViewModel::class.java)
+
         Thread {
             val data = URL("http://api.snooker.org/?t=5&s=2020").readText()
             val result = Gson().fromJson(data, EventResult::class.java)
@@ -152,6 +156,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-//        stopService(cacheService)
+        stopService(cacheService)
     }
 }

@@ -3,7 +3,7 @@ package com.quick.guess
 import java.util.*
 
 class SecretNumber {
-    var secret: Int = Random().nextInt(10) + 1
+    var secret = Random().nextInt(10) + 1
     var count = 0
 
     fun validate(number: Int) : Int {
