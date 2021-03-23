@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.quick.guess.data.GameDatabase
@@ -29,6 +30,9 @@ class MaterialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_material)
         setSupportActionBar(toolbar)
         viewModel = ViewModelProvider(this).get(GuessViewModel::class.java)
+        viewModel.counter.observe(this, Observer {data ->
+            counter.setText(data.toString())
+        })
 
         fab.setOnClickListener { view ->
             replay()
@@ -96,7 +100,8 @@ class MaterialActivity : AppCompatActivity() {
     }
 
     fun check(view : View) {
-        val n = ed_number.text.toString().toInt()
+        viewModel.guess(3)
+        /*val n = ed_number.text.toString().toInt()
         println("number: $n")
         Log.d(TAG, "n:" + n)
 
@@ -122,7 +127,7 @@ class MaterialActivity : AppCompatActivity() {
                     startActivityForResult(intent, REQUEST_RECORD)
                 }
             })
-            .show()
+            .show()*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

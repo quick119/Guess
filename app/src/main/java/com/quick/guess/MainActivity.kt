@@ -154,6 +154,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        stopService(cacheService)
+//        stopService(cacheService)
     }
 }
