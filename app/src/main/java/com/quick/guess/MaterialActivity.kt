@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.content_material.counter
 class MaterialActivity : AppCompatActivity() {
     private lateinit var viewModel: GuessViewModel
     private val REQUEST_RECORD: Int = 100
-    val secretNumber = SecretNumber()
     val TAG = MaterialActivity::class.java.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +32,21 @@ class MaterialActivity : AppCompatActivity() {
         viewModel.counter.observe(this, Observer {data ->
             counter.setText(data.toString())
         })
-
+        viewModel.result.observe(this, {result ->
+            var message = when(result) {
+                GameResult.BIGGER -> "Bigger"
+                GameResult.SMALLER -> "Smaller"
+                GameResult.NUMBER_RIGHT -> "Yes! you got it"
+            }
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.dialog_title))
+                .setMessage(message)
+                .setPositiveButton(getString(R.string.ok), null)
+                .show()
+        })
         fab.setOnClickListener { view ->
-            replay()
+            viewModel.reset()
         }
-        counter.setText(secretNumber.count.toString())
-        Log.d(TAG, "onCreate:" + secretNumber.secret)
         val count = getSharedPreferences("guess", Context.MODE_PRIVATE)
             .getInt("REC_COUNTER", -1)
         val nick = getSharedPreferences("guess", Context.MODE_PRIVATE)
@@ -58,9 +66,7 @@ class MaterialActivity : AppCompatActivity() {
             .setTitle(getString(R.string.replay_game))
             .setMessage(getString(R.string.are_you_sure))
             .setPositiveButton(getString(R.string.ok), { dialog, which ->
-                secretNumber.reset()
-                Log.d(TAG, "serect:" + secretNumber.secret)
-                counter.setText(secretNumber.count.toString())
+                viewModel.reset()
                 ed_number.setText("")
             })
             .setNeutralButton(getString(R.string.cancel), null)
@@ -100,7 +106,8 @@ class MaterialActivity : AppCompatActivity() {
     }
 
     fun check(view : View) {
-        viewModel.guess(3)
+        val n = ed_number.text.toString().toInt()
+        viewModel.guess(n)
         /*val n = ed_number.text.toString().toInt()
         println("number: $n")
         Log.d(TAG, "n:" + n)
