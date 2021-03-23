@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.quick.guess.data.GameDatabase
 import com.quick.guess.data.Record
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.content_material.*
 import kotlinx.android.synthetic.main.content_material.counter
 
 class MaterialActivity : AppCompatActivity() {
+    private lateinit var viewModel: GuessViewModel
     private val REQUEST_RECORD: Int = 100
     val secretNumber = SecretNumber()
     val TAG = MaterialActivity::class.java.simpleName
@@ -26,6 +28,7 @@ class MaterialActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate: ")
         setContentView(R.layout.activity_material)
         setSupportActionBar(toolbar)
+        viewModel = ViewModelProvider(this).get(GuessViewModel::class.java)
 
         fab.setOnClickListener { view ->
             replay()

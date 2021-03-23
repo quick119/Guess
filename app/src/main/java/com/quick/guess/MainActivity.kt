@@ -27,7 +27,6 @@ import java.net.URL
 import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: GuessViewModel
     private val REQUEST_CODE_CAMERA = 100
     val TAG = MainActivity::class.java.simpleName
     var cacheService : Intent? = null
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel = ViewModelProvider(this).get(GuessViewModel::class.java)
 
         Thread {
             val data = URL("http://api.snooker.org/?t=5&s=2020").readText()
