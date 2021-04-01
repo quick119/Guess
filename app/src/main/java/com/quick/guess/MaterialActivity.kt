@@ -105,6 +105,20 @@ class MaterialActivity : AppCompatActivity() {
         Log.d(TAG, "onDestroy: ")
     }
 
+    fun test() {
+        val intent = Intent(this, RecordActivity::class.java)
+        intent.putExtra("A", "abc")
+        intent.putExtra("BB", "Testing")
+        startActivity(intent)
+        //
+        Intent(this, RecordActivity::class.java).apply {
+            putExtra("A", "abc")
+            putExtra("BB", "Testing")
+        }.also { intent ->
+            startActivity(intent)
+        }
+    }
+
     fun check(view : View) {
         val n = ed_number.text.toString().toInt()
         viewModel.guess(n)
